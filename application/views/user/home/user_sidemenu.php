@@ -36,7 +36,7 @@
 						<li class="nav-item current">
 							<a href="<?php echo base_url()?>user-bookings" class="nav-link <?= ($this->uri->segment(1)=="user-bookings")?'active':'';?>">
 								<i class="far fa-calendar-check"></i>
-								<span><?php echo (!empty($user_language[$user_selected]['lg_Booking_List'])) ? $user_language[$user_selected]['lg_Booking_List'] : $default_language['en']['lg_Booking_List']; ?></span>
+								<span><?php /*echo (!empty($user_language[$user_selected]['lg_Booking_List'])) ? $user_language[$user_selected]['lg_Booking_List'] : $default_language['en']['lg_Booking_List']; */?>Contact List</span>
 							</a>
 						</li>
 						<li class="nav-item current">

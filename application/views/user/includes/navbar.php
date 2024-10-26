@@ -606,7 +606,7 @@ $google_analytics_code = $this->db->get_where('system_settings', array('key'=>'g
                                     </div>
                                     <a class="dropdown-item" href="<?php echo base_url(); ?>provider-dashboard"><?php echo (!empty($user_language[$user_selected]['lg_Dashboard'])) ? $user_language[$user_selected]['lg_Dashboard'] : $default_language['en']['lg_Dashboard']; ?></a>
                                     <a class="dropdown-item" href="<?php echo base_url(); ?>my-services"><?php echo (!empty($user_language[$user_selected]['lg_My_Services'])) ? $user_language[$user_selected]['lg_My_Services'] : $default_language['en']['lg_My_Services']; ?></a>
-                                    <a class="dropdown-item" href="<?php echo base_url(); ?>provider-bookings"><?php /*echo (!empty($user_language[$user_selected]['lg_Booking_List'])) ? $user_language[$user_selected]['lg_Booking_List'] : $default_language['en']['lg_Booking_List']; */?>My Contacts</a>
+                                    <a class="dropdown-item" href="<?php echo base_url(); ?>provider-bookings"><?php echo (!empty($user_language[$user_selected]['lg_Booking_List'])) ? $user_language[$user_selected]['lg_Booking_List'] : $default_language['en']['lg_Booking_List']; ?></a>
                                     <?php if (settingValue('wallet_option') == 1) { ?>
                                         <a class="dropdown-item" href="<?php echo base_url(); ?>provider-wallet"><?php echo (!empty($user_language[$user_selected]['lg_wallet'])) ? $user_language[$user_selected]['lg_wallet'] : $default_language['en']['lg_wallet']; ?></a>
                                     <?php } ?>
