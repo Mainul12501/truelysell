@@ -1,0 +1,463 @@
+<?php
+class Footer_submenu extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        error_reporting(0);
+        $this->data['theme']  = 'admin';
+        $this->data['model'] = 'footer_submenu';
+        $this->load->model('admin_model', 'admin');
+        $this->load->model('common_model');
+        $this->data['base_url'] = base_url();
+        $this->data['admin_id']  = $this->session->userdata('id');
+        $this->data['user_role']         = !empty($this->session->userdata('user_role')) ? $this->session->userdata('user_role') : 0;
+        $this->data['main_menu'] = $this->admin->get_all_footer_menu();
+        $this->load->helper('ckeditor');
+        $this->load->helper('common_helper');
+        $this->load->helper('custom_language');
+
+        //Get Language Keywords from content lang file
+        $langs = !empty($this->session->userdata('lang')) ? $this->session->userdata('lang') : 'en';
+        $lang = $this->db->get_where('language', array('language_value' => $langs))->row()->language;
+        $this->data['language_content'] = $this->lang->load('content', strtolower($lang), true);
+        $this->language = $this->lang->load('content', strtolower($lang), true);
+
+        // Array with the settings for this instance of CKEditor (you can have more than one)
+        $this->data['ckeditor_editor1'] = array(
+            //id of the textarea being replaced by CKEditor
+            'id' => 'ck_editor_textarea_id',
+            // CKEditor path from the folder on the root folder of CodeIgniter
+            'path' => 'assets/js/ckeditor',
+            // optional settings
+            'config' => array(
+                'toolbar' => "Full",
+                'filebrowserBrowseUrl' => base_url() . 'assets/js/ckfinder/ckfinder.html',
+                'filebrowserImageBrowseUrl' => base_url() . 'assets/js/ckfinder/ckfinder.html?Type=Images',
+                'filebrowserFlashBrowseUrl' => base_url() . 'assets/js/ckfinder/ckfinder.html?Type=Flash',
+                'filebrowserUploadUrl' => base_url() . 'assets/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+                'filebrowserImageUploadUrl' => base_url() . 'assets/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+                'filebrowserFlashUploadUrl' => base_url() . 'assets/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+            )
+        );
+    }
+
+    public function index($offset = 0)
+    {
+        $this->data['page']  = 'index';
+        $this->data['lists'] = $this->admin->get_footer_submenu();
+        $this->load->vars($this->data);
+        $this->load->view($this->data['theme'] . '/template');
+    }
+
+    public function create()
+    {
+        $data = $this->input->post();
+
+        if ($this->input->post('form_submit')) {
+            if ($this->data['admin_id'] > 1) {
+                $message = (!empty($this->data['language_content']['lg_no_permission'])) ? $this->data['language_content']['lg_no_permission'] : 'Permission Denied';
+                $this->session->set_flashdata('message', '<p class="alert alert-danger">'.$message.'</p>');
+                redirect(base_url() . 'admin/footer_submenu');
+            } else {
+                if ($this->input->post('menu_status') != null) {
+                    $menu_status = $this->input->post('menu_status');
+                } else {
+                    $menu_status = 0;
+                }
+                //append value to json-code
+                $link = $_POST['link'];
+                $data2 = json_encode($link);
+                $data['footer_menu']    = $this->input->post('main_menu');
+
+                $value                  = $this->input->post('sub_menu');
+                $data['footer_submenu'] = str_replace(' ', '_', $value);
+                $data['category_view']  = $this->input->post('category_view');
+                $data['category_count'] = $this->input->post('category_count');
+                $data['link']  = $data2;
+                $data['address']  = $this->input->post('address');
+                $data['phone']  = $this->input->post('phone');
+                $data['email']  = $this->input->post('email');
+                $data['page_desc']      = $this->input->post('page_desc');
+                $data['status']         = $this->input->post('status');
+                $data['menu_status']    = $menu_status;
+                $data1['facebook']  = $this->input->post('facebook');
+                $data1['youtube']  = $this->input->post('youtube');
+                $data1['instagram']  = $this->input->post('instagram');
+                $data1['twitter']  = $this->input->post('twitter');
+                $data1['whatsapp']  = $this->input->post('whatsapp');
+                $data1['telegram']  = $this->input->post('telegram');
+                $data1['snapchat']  = $this->input->post('snapchat');
+                $data1['pinterest']  = $this->input->post('pinterest');
+                $data['followus_link'] = json_encode($data1);
+
+                $this->db->insert('footer_submenu', $data);
+                if ($this->db->affected_rows() > 0) {
+                    $message = (!empty($this->data['language_content']['lg_admin_footer_settings_update'])) ? $this->data['language_content']['lg_admin_footer_settings_update'] : 'Footer Settings updated successfully. ';
+                    $this->session->set_flashdata('success_message', $message);
+                    redirect($_SERVER["HTTP_REFERER"]);
+                } else {
+                    $message = (!empty($this->data['language_content']['lg_something_went_wrong'])) ? $this->data['language_content']['lg_something_went_wrong'] : 'Something went wrong, Try again';
+                    $this->session->set_flashdata('error_message', $message);
+                    redirect($_SERVER["HTTP_REFERER"]);
+                }
+            }
+        }
+        $this->load->vars($this->data);
+        $this->load->view($this->data['theme'] . '/template');
+    }
+    public function edit($id)
+    {
+        $this->data['page']     = 'edit';
+        $this->data['datalist'] = $this->admin->edit_submenu($id);
+        if ($this->data['admin_id'] > 1) {
+            $message = (!empty($this->data['language_content']['lg_no_permission'])) ? $this->data['language_content']['lg_no_permission'] : 'Permission Denied';
+            $this->session->set_flashdata('message', '<p class="alert alert-danger">'.$message.'</p>');
+            redirect(base_url() . 'admin/footer_submenu');
+        } else {
+            if ($this->input->post('form_submit')) {
+                if ($this->input->post('menu_status') != null) {
+                    $menu_status = $this->input->post('menu_status');
+                } else {
+                    $menu_status = 0;
+                }
+                //append value to json-code
+                $label = $_POST['label'];
+                $link = $_POST['link'];
+                $combined = array_combine($label, $link);
+                $data2 = json_encode($combined);
+                $data['footer_menu']    = $this->input->post('main_menu');
+                $value                  = $this->input->post('sub_menu');
+                $data['footer_submenu'] = str_replace(' ', '_', $value);
+                $data['category_view']  = $this->input->post('category_view');
+                $data['category_count'] = $this->input->post('category_count');
+                $data['link']  = $data2;
+                $data['address']  = $this->input->post('address');
+                $data['phone']  = $this->input->post('phone');
+                $data['email']  = $this->input->post('email');
+                $data['page_desc']      = $this->input->post('page_desc');
+                $data['status']         = $this->input->post('status');
+                $data['menu_status']    = $menu_status;
+                $data1['facebook']  = $this->input->post('facebook');
+                $data1['youtube']  = $this->input->post('youtube');
+                $data1['instagram']  = $this->input->post('instagram');
+                $data1['twitter']  = $this->input->post('twitter');
+                $data1['whatsapp']  = $this->input->post('whatsapp');
+                $data1['telegram']  = $this->input->post('telegram');
+                $data1['snapchat']  = $this->input->post('snapchat');
+                $data1['pinterest']  = $this->input->post('pinterest');
+                $data['followus_link'] = json_encode($data1);
+                $this->db->where('id', $id);
+                if ($this->db->update('footer_submenu', $data)) {
+                    $message = "<div class='alert alert-success text-center fade in' id='flash_succ_message'>footer menu edited successfully.</div>";
+                }
+                $this->session->set_flashdata('message', $message);
+                redirect(base_url() . 'admin/footer_submenu');
+            }
+        }
+        $this->load->vars($this->data);
+        $this->load->view($this->data['theme'] . '/template');
+    }
+    public function delete_footer_submenu()
+    {
+        if ($this->data['admin_id'] > 1) {
+            $message = (!empty($this->data['language_content']['lg_no_permission'])) ? $this->data['language_content']['lg_no_permission'] : 'Permission Denied';
+            $this->session->set_flashdata('message', '<p class="alert alert-danger">'.$message.'</p>');
+            redirect(base_url() . 'admin/footer_submenu');
+        } else {
+            $id = $this->input->post('tbl_id');
+            if (!empty($id)) {
+                $this->db->delete('footer_submenu', array(
+                    'id' => $id
+                ));
+                $message = (!empty($this->data['language_content']['lg_admin_footer_menu_delete'])) ? $this->data['language_content']['lg_admin_footer_menu_delete'] : 'footer menu deleted successfully. ';
+                // $message = "<div class='alert alert-success text-center fade in' id='flash_succ_message'>footer menu deleted successfully.</div>";
+                echo 1;
+            }
+            $this->session->set_flashdata('message', $message);
+        }
+    }
+
+    public function category_widget()
+    {
+        if ($this->input->post("form_submit") == true) {
+            $this->common_model->checkAdminLogin();
+            $categories = $this->db->get_where('footer_submenu', array('id' => 1))->row();
+            $post_data = $this->input->post();
+
+            $query = $this->db->query("select * from language WHERE status = '1'");
+            $languages = $query->result();
+            foreach ($languages as $language) {
+                $cat_wid_val = array(
+                    'modules' => 'category_widget',
+                    'title' => $this->input->post('category_title_' . $language->id, true),
+                    'lang_type' => $language->language_value
+                );
+                $this->db->where('modules', 'category_widget');
+                $this->db->where('lang_type', $language->language_value);
+                $row = $this->db->get('footer_submenu_lang')->row();
+                if (empty($row)) {
+                    $this->db->insert('footer_submenu_lang', $cat_wid_val);
+                } else {
+                    $this->db->where('modules', 'category_widget');
+                    $this->db->where('lang_type', $language->language_value);
+                    $this->db->update('footer_submenu_lang', $cat_wid_val);
+                }
+            }
+            $table_data = array(
+                'widget_showhide' => ($post_data['categories_showhide']) ? '1' : '0',
+                'page_title' => $post_data['category_title_28'],
+                'widget_name' => 'Categories-Widget',
+                'category_view' => $post_data['category_view'],
+                'category_count' => $post_data['category_count'],
+            );
+            if (empty($categories)) {
+                $result = $this->db->insert('footer_submenu', $table_data);
+            } else {
+                $where = array('widget_name' => 'Categories-Widget',);
+                $result = $this->admin->update_data('footer_submenu', $table_data, $where);
+            }
+            if ($result) {
+                $message = (!empty($this->data['language_content']['lg_admin_categorieswidget_update'])) ? $this->data['language_content']['lg_admin_categorieswidget_update'] : 'Categories Widget updated successfully. ';
+                $this->session->set_flashdata('success_message', $message);
+                redirect($_SERVER["HTTP_REFERER"]);
+            } else {
+                $message = (!empty($this->data['language_content']['lg_something_went_wrong'])) ? $this->data['language_content']['lg_something_went_wrong'] : 'Something went wrong, Try again';
+                $this->session->set_flashdata('error_message', $message);
+                redirect($_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
+    public function contact_widget()
+    {
+        if ($this->input->post("form_submit") == true) {
+            $this->common_model->checkAdminLogin();
+            $contact_id = $this->db->get_where('footer_submenu', array('id' => 3))->row();
+            $post_data = $this->input->post();
+
+            $query = $this->db->query("select * from language WHERE status = '1'");
+            $languages = $query->result();
+            foreach ($languages as $language) {
+                $con_wid_val = array(
+                    'modules' => 'contact_widget',
+                    'title' => $this->input->post('contact_title_' . $language->id, true),
+                    'lang_type' => $language->language_value
+                );
+                $this->db->where('modules', 'contact_widget');
+                $this->db->where('lang_type', $language->language_value);
+                $row = $this->db->get('footer_submenu_lang')->row();
+                if (empty($row)) {
+                    $this->db->insert('footer_submenu_lang', $con_wid_val);
+                } else {
+                    $this->db->where('modules', 'contact_widget');
+                    $this->db->where('lang_type', $language->language_value);
+                    $this->db->update('footer_submenu_lang', $con_wid_val);
+                }
+            }
+
+            $table_data = array(
+                'widget_showhide' => ($post_data['contact_showhide']) ? '1' : '0',
+                'page_title' => $post_data['contact_title_28'],
+                'widget_name' => 'contact-widget',
+                'address' => $post_data['address'],
+                'phone' => $post_data['phone'],
+                'email' => $post_data['email']
+            );
+            if (empty($contact_id)) {
+                $this->db->insert('footer_submenu', $table_data);
+            } else {
+                $where = array('widget_name' => 'contact-widget');
+                $this->admin->update_data('footer_submenu', $table_data, $where);
+            }
+            if ($this->db->affected_rows() > 0) {
+                $message = (!empty($this->data['language_content']['lg_admin_contactwidget_update'])) ? $this->data['language_content']['lg_admin_contactwidget_update'] : 'Contact Widget updated successfully. ';
+                $this->session->set_flashdata('success_message', $message);
+                redirect($_SERVER["HTTP_REFERER"]);
+            } else {
+                $message = (!empty($this->data['language_content']['lg_something_went_wrong'])) ? $this->data['language_content']['lg_something_went_wrong'] : 'Something went wrong, Try again';
+                $this->session->set_flashdata('error_message', $message);
+                redirect($_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
+    public function link_widget()
+    {
+        // if($this->input->post("form_submit") == true) {
+
+        $this->common_model->checkAdminLogin();
+        $link_id = $this->db->get_where('footer_submenu', array('id' => 2))->row();
+        $post_data = $this->input->post();
+
+        $query = $this->db->query("select * from language WHERE status = '1'");
+        $languages = $query->result();
+        foreach ($languages as $language) {
+            $con_wid_val = array(
+                'modules' => 'link_widget',
+                'title' => $this->input->post('link_title_' . $language->id, true),
+                'lang_type' => $language->language_value
+            );
+            $this->db->where('modules', 'link_widget');
+            $this->db->where('lang_type', $language->language_value);
+            $row = $this->db->get('footer_submenu_lang')->row();
+            if (empty($row)) {
+                $this->db->insert('footer_submenu_lang', $con_wid_val);
+            } else {
+                $this->db->where('modules', 'link_widget');
+                $this->db->where('lang_type', $language->language_value);
+                $this->db->update('footer_submenu_lang', $con_wid_val);
+            }
+        }
+        $label = $post_data['label'];
+        $links = $post_data['link'];
+        
+        foreach ($label as $key => $value) {
+            $label = $value;
+            $link = $links[$key];
+            $i = 1;
+            if (!empty($label) && !empty($links)) {
+                $datas = [];
+                foreach ($label  as  $l => $labval) {
+                    $link = $links[$l];
+                    if (!empty($labval) && !empty($link)) {
+                        $datas[] = array(
+                            'id' => $i,
+                            'label' =>  $labval,
+                            'link'  => $link
+                        );
+                        $i++;
+                    }
+                }
+                $link_data[$key] = $datas;
+            }
+        }
+       
+        $link_details = json_encode($link_data);
+        $table_data = array(
+            'widget_showhide' => ($post_data['link_showhide']) ? '1' : '0',
+            'page_title' => $post_data['link_title_28'],
+            'widget_name' => 'Link-Widget',
+            'link' => $link_details,
+        );
+
+        if (empty($link_id)) {
+            $this->db->insert('footer_submenu', $table_data);
+        } else {
+            $where = array('id' => 2);
+            $this->admin->update_data('footer_submenu', $table_data, $where);
+        }
+        $message = (!empty($this->data['language_content']['lg_admin_linkswidget_update'])) ? $this->data['language_content']['lg_admin_linkswidget_update'] : 'Link Widget updated successfully. ';
+        $this->session->set_flashdata('success_message', $message);
+        redirect($_SERVER["HTTP_REFERER"]);
+        //  }
+    }
+
+    public function social_widget()
+    {
+        if ($this->input->post("form_submit") == true) {
+            $this->common_model->checkAdminLogin();
+            $contact_id = $this->db->get_where('footer_submenu', array('widget_name' => 'social-widget'))->row();
+            $post_data = $this->input->post();
+
+            $query = $this->db->query("select * from language WHERE status = '1'");
+            $languages = $query->result();
+            foreach ($languages as $language) {
+                $social_wid_val = array(
+                    'modules' => 'social_widget',
+                    'title' => $this->input->post('socail_title_' . $language->id, true),
+                    'lang_type' => $language->language_value
+                );
+                $this->db->where('modules', 'social_widget');
+                $this->db->where('lang_type', $language->language_value);
+                $row = $this->db->get('footer_submenu_lang')->row();
+                if (empty($row)) {
+                    $this->db->insert('footer_submenu_lang', $social_wid_val);
+                } else {
+                    $this->db->where('modules', 'social_widget');
+                    $this->db->where('lang_type', $language->language_value);
+                    $this->db->update('footer_submenu_lang', $social_wid_val);
+                }
+            }
+
+            $data1['facebook']  = $this->input->post('facebook');
+            $data1['twitter']  = $this->input->post('twitter');
+            $data1['youtube']  = $this->input->post('youtube');
+            $data1['linkedin']  = $this->input->post('linkedin');
+            $data1['github']  = $this->input->post('github');
+            $data1['instagram']  = $this->input->post('instagram');
+            $data1['gplus']  = $this->input->post('gplus');
+            $data = json_encode($data1);
+            $table_data = array(
+                'widget_showhide' => ($post_data['social_showhide']) ? '1' : '0',
+                'page_title' => $post_data['socail_title_28'],
+                'widget_name' => 'social-widget',
+                'followus_link' => $data
+            );
+            if (empty($contact_id)) {
+                $this->db->insert('footer_submenu', $table_data);
+            } else {
+                $where = array('widget_name' => 'social-widget');
+                $this->admin->update_data('footer_submenu', $table_data, $where);
+            }
+            if ($this->db->affected_rows() > 0) {
+                $message = (!empty($this->data['language_content']['lg_admin_socialwidget_update'])) ? $this->data['language_content']['lg_admin_socialwidget_update'] : 'Social Widget updated successfully. ';
+                $this->session->set_flashdata('success_message', $message);
+                redirect($_SERVER["HTTP_REFERER"]);
+            } else {
+                $message = (!empty($this->data['language_content']['lg_something_went_wrong'])) ? $this->data['language_content']['lg_something_went_wrong'] : 'Something went wrong, Try again';
+                $this->session->set_flashdata('error_message', $message);
+                redirect($_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
+    public function copyright_widget()
+    {
+
+        if ($this->input->post("form_submit") == true) {
+            $this->common_model->checkAdminLogin();
+            $contact_id = $this->db->get_where('footer_submenu', array('id' => 5))->row();
+            $post_data = $this->input->post();
+            $label = $post_data['label1'];
+            $link = $post_data['link1'];
+
+            $i = 1;
+            foreach ($label as $key => $value) {
+                $name = $value;
+                $url = $link[$key];
+                if (!empty($name) && !empty($url)) {
+                    $menu_data[] = array(
+                        'id' => $i,
+                        'name' =>  $name,
+                        'url'  => $url
+                    );
+                }
+                $i++;
+            }
+
+            $menu_details = json_encode($menu_data);
+            $table_data = array(
+                'widget_showhide' => ($post_data['copyright_showhide']) ? '1' : '0',
+                'page_desc' => $post_data['copyright_title'],
+                'widget_name' => 'copyright-widget',
+                'link' => $menu_details
+            );
+            if (empty($contact_id)) {
+                $this->db->insert('footer_submenu', $table_data);
+            } else {
+                $where = array('widget_name' => 'copyright-widget');
+                $this->admin->update_data('footer_submenu', $table_data, $where);
+            }
+            if ($this->db->affected_rows() > 0) {
+                $message = (!empty($this->data['language_content']['lg_admin_Copyright_Widget_update'])) ? $this->data['language_content']['lg_admin_Copyright_Widget_update'] : 'Copyright Widget updated successfully. ';
+                $this->session->set_flashdata('success_message', $message);
+                redirect($_SERVER["HTTP_REFERER"]);
+            } else {
+                $message = (!empty($this->data['language_content']['lg_something_went_wrong'])) ? $this->data['language_content']['lg_something_went_wrong'] : 'Something went wrong, Try again';
+                $this->session->set_flashdata('error_message', $message);
+                redirect($_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+}
