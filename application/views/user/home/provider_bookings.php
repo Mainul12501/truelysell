@@ -191,7 +191,9 @@ $usertype = ($this->session->userdata('usertype') == "user")? 1 : 2;
                                                     <span><?php echo (!empty($user_language[$user_selected]['lg_Booking_time'])) ? $user_language[$user_selected]['lg_Booking_time'] : $default_language['en']['lg_Booking_time']; ?></span> <?= $from_time ?> - <?= $to_time ?></li>
                                                 <li><span><?php echo (!empty($user_language[$user_selected]['lg_Amount'])) ? $user_language[$user_selected]['lg_Amount'] : $default_language['en']['lg_Amount']; ?></span> <?php echo currency_conversion($user_currency_code) . $service_amount; ?></li>
                                                 <li><span><?php echo (!empty($user_language[$user_selected]['lg_Location'])) ? $user_language[$user_selected]['lg_Location'] : $default_language['en']['lg_Location']; ?></span> <?php echo (!empty($bookings['location'])) ? $bookings['location'] : "-"; ?></li>
-                                                <li><span><?php echo (!empty($user_language[$user_selected]['lg_Phone'])) ? $user_language[$user_selected]['lg_Phone'] : $default_language['en']['lg_Phone']; ?></span><?php echo $user_info['country_code'] ?>-<?php echo $user_info['mobileno'] ?></li>
+                                                <li><span><?php echo (!empty($user_language[$user_selected]['lg_Phone'])) ? $user_language[$user_selected]['lg_Phone'] : $default_language['en']['lg_Phone']; ?></span>
+                                                    <a href="tel:<?php echo $user_info['country_code'] ?>-<?php echo $user_info['mobileno'] ?>"><?php echo $user_info['country_code'] ?>-<?php echo $user_info['mobileno'] ?></a></li>
+                                                <li><span>Notes : </span><span><?php echo $bookings['notes'] ?? '' ?></span></li>
                                                 <li>
                                                     <?php 
                                                         $user_lang = ($this->session->userdata('user_select_language'))?$this->session->userdata('user_select_language'):'en';

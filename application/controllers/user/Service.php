@@ -1975,7 +1975,8 @@ class Service extends CI_Controller {
     }
 
     public function book_service() 
-    {		
+    {
+
 		$query = $this->db->query("select * from system_settings WHERE status = 1");
 		$result = $query->result_array();
 		if (!empty($result)) {

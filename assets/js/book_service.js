@@ -75,9 +75,11 @@
       },
       success: function(response){
        $('.page-loading').fadeOut();
+       // console.log(response);
         Swal.fire({
             title: "Booking Confirmation...",
-            text: "Your booking was booked Successfully ...!",
+            // text: "Your booking was booked Successfully ...!",
+            html: `<p>Your booking was booked Successfully ...!</p><p>Please contact our provider for further informations.</p><p>Provider Name: ${response.provider.name}, Phone: ${response.provider.mobileno}, Office Address: ${response.provider_address}</p>`,
             icon: "success",
             button: "okay",
             closeOnEsc: false,
@@ -213,7 +215,8 @@
 				   } else if(status == 1){
             Swal.fire({
 					 title: "Booking Confirmation...",
-					 text: "Your booking was booked Successfully ...!",
+					 // text: "Your booking was booked Successfully ...!",
+              html: `<p>Your booking was booked Successfully ...!</p><p>Please contact our provider for further informations.</p><p>Provider Name: ${response.provider.name}, Phone: ${response.provider.mobileno}, Office Address: ${response.provider_address}</p>`,
 					 icon: "success",
 					 button: "okay",
 					 closeOnEsc: false,

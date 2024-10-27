@@ -146,7 +146,7 @@ class Booking extends CI_Controller {
     }
 
     public function book_service() {
-        
+
         $user_currency = get_user_currency();
         $user_currency_code = $user_currency['user_currency_code'];
         
@@ -579,7 +579,22 @@ class Booking extends CI_Controller {
 
 
             $this->session->set_flashdata('success_message', $message);
-			echo json_encode(['success' => true, 'msg' => $message, 'status' => 1]);
+
+            $providerInfo = $this->db->select('*')->
+            from('providers')->
+            where('id', (int) $inputs['provider_id'])->
+            get()->row_array();
+
+            if (!empty($providerInfo['id']))
+            {
+                $provider_address = $this->db->select('*')->
+                from('provider_address')->
+                where('provider_id', (int) $providerInfo['id'])->
+                get()->row_array();
+            }
+
+
+			echo json_encode(['success' => true, 'msg' => $message, 'status' => 1, 'provider' => $providerInfo, 'provider_address' => $provider_address['address'] ?? '']);
         } else {
             $message = (!empty($this->user_language[$this->user_selected]['lg_something_went_wrong'])) ? $this->user_language[$this->user_selected]['lg_something_went_wrong'] : $this->default_language['en']['lg_something_went_wrong'];
             $this->session->set_flashdata('error_message', $message);

@@ -495,7 +495,7 @@ $placholder_img = $this->db->get_where('system_settings', array('key' => 'servic
 
 
                                         <?php if (settingValue('booking_showhide') == 1) { ?>
-                                            <button class="btn btn-primary go_book_service" type="button" id="go_book_service" data-id="<?php echo $service['id'] ?>"><?php echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; ?> </button>
+                                            <button class="btn btn-primary go_book_service" type="button" id="go_book_service" data-id="<?php echo $service['id'] ?>"><?php /*echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; */?>Contact</button>
 
                                         <?php } ?>
 
@@ -1098,7 +1098,7 @@ $placholder_img = $this->db->get_where('system_settings', array('key' => 'servic
 
 
                                 <?php if (settingValue('booking_showhide') == 1) { ?>
-                                    <button class="btn btn-primary go_book_service" type="button" id="go_book_service" data-id="<?php echo $service['id'] ?>"><?php echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; ?> </button>
+                                    <button class="btn btn-primary go_book_service" type="button" id="go_book_service" data-id="<?php echo $service['id'] ?>"><?php /*echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; */?>Contact </button>
 
                                 <?php } ?>
 

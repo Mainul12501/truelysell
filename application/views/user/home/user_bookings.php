@@ -12,7 +12,7 @@ if(!empty($rows['created_at'])){
             <div class="col-xl-9 col-md-8">
                 <div class="row align-items-center mb-4">
                     <div class="col">
-                        <h4 class="widget-title mb-0"><?php echo (!empty($user_language[$user_selected]['lg_My_Bookings'])) ? $user_language[$user_selected]['lg_My_Bookings'] : $default_language['en']['lg_My_Bookings']; ?></h4>
+                        <h4 class="widget-title mb-0"><?php /*echo (!empty($user_language[$user_selected]['lg_My_Bookings'])) ? $user_language[$user_selected]['lg_My_Bookings'] : $default_language['en']['lg_My_Bookings']; */?> My Contacts</h4>
                     </div>
                     <div class="col-auto">
                        <div class="sort-by">
@@ -148,6 +148,14 @@ if(!empty($rows['created_at'])){
                                                                 from('providers')->
                                                                 where('id', (int) $bookings['provider_id'])->
                                                                 get()->row_array();
+                                                if (!empty($provider_info['id']))
+                                                {
+                                                    $provider_address = $this->db->select('*')->
+                                                                from('provider_address')->
+                                                                where('provider_id', (int) $provider_info['id'])->
+                                                                get()->row_array();
+                                                }
+
                                             }
                                             
                                             $image = base_url().(($placholder_img&&file_exists($placholder_img))?$placholder_img:'assets/img/user.jpg');
@@ -205,7 +213,9 @@ if(!empty($rows['created_at'])){
                                                     <span><?php echo (!empty($user_language[$user_selected]['lg_Booking_time'])) ? $user_language[$user_selected]['lg_Booking_time'] : $default_language['en']['lg_Booking_time']; ?></span> <?= $from_time ?> - <?= $to_time ?></li>
                                                 <li><span><?php echo (!empty($user_language[$user_selected]['lg_Amount'])) ? $user_language[$user_selected]['lg_Amount'] : $default_language['en']['lg_Amount']; ?></span> <?php echo currency_conversion($user_currency_code) . $service_amount1; ?></li>
                                                 <li><span><?php echo (!empty($user_language[$user_selected]['lg_Location'])) ? $user_language[$user_selected]['lg_Location'] : $default_language['en']['lg_Location']; ?></span> <?php echo $bookings['location'] ?></li>
-                                                <li><span><?php echo (!empty($user_language[$user_selected]['lg_Phone'])) ? $user_language[$user_selected]['lg_Phone'] : $default_language['en']['lg_Phone']; ?></span><?php echo $provider_info['country_code'] ?>-<?php echo $provider_info['mobileno'] ?></li>
+                                                <li><span><?php echo (!empty($user_language[$user_selected]['lg_Phone'])) ? $user_language[$user_selected]['lg_Phone'] : $default_language['en']['lg_Phone']; ?></span><a
+                                                            href="tel:<?php echo $provider_info['country_code'] ?>-<?php echo $provider_info['mobileno'] ?>"><?php echo $provider_info['country_code'] ?>-<?php echo $provider_info['mobileno'] ?></a></li>
+                                                <li><span>Notes : </span><span><?php echo $bookings['notes'] ?? '' ?></span></li>
                                                 <li>
                                                      <span><?php echo (!empty($user_language[$user_selected]['lg_Provider'])) ? $user_language[$user_selected]['lg_Provider'] : $default_language['en']['lg_Provider']; ?></span>
                                                     <div class="avatar avatar-xs mr-1">
@@ -249,6 +259,7 @@ if(!empty($rows['created_at'])){
                                                         }
                                                     ?>
                                                 </li>
+                                                <li><span>Address : </span><span><?php echo $provider_address['address'] ?? '' ?></span></li>
                                             </ul>
                                         </div>
                                     </div>

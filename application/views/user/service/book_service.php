@@ -32,6 +32,8 @@ if (is_nan($service_amount) || is_infinite($service_amount)) {
                 </div>
 
 
+
+
                 <form method="post" enctype="multipart/form-data" autocomplete="off" id="book_services" >
                     <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                     <input type="hidden" name="currency_code" value="<?php echo $user_currency_code; ?>">
