@@ -18,7 +18,8 @@
 		"braintree/braintree_php" : "5.2.0",
 		"phpoffice/phpspreadsheet": "^1.13",
 		"sendgrid/sendgrid": "^7",
-		"mpdf/mpdf": "^8.0.13"
+		"mpdf/mpdf": "^8.0.13",
+		"guzzlehttp/guzzle": "^7.9"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

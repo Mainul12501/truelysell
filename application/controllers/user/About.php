@@ -69,5 +69,21 @@ class About extends CI_Controller {
         $this->load->vars($this->data);
 		$this->load->view($this->data['theme'].'/template');
 	}
-   
+
+    public function send_sms()
+    {
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get('https://msg.elitbuzz-bd.com/smsapi?api_key=C2008791651585f7b56e47.45988506&type=text&contacts=01646688970&senderid=8809601011337&msg='.urlencode('Hello there'));
+            $body   = $response->getBody();
+            echo $body;
+        } catch (Exception $exception)
+        {
+            echo $exception->getMessage();
+        }
+
+    }
+
+
+
 }

@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+$route['send-sms'] = 'user/about/send_sms';
 /*
 | ----------------------------------------------------------------	---------
 | URI ROUTING
