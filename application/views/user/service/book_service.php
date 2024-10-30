@@ -28,7 +28,7 @@ if (is_nan($service_amount) || is_infinite($service_amount)) {
             <div class="col-lg-10">
 
                 <div class="section-header text-center">
-                    <h2><?php echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; ?></h2>
+                    <h2><?php /*echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; */?>Please Fill The Information</h2>
                 </div>
 
 
@@ -103,7 +103,7 @@ if (is_nan($service_amount) || is_infinite($service_amount)) {
 
                                             $totalAddService += $additionalServiceAmount;
                                             ?>
-                                            
+
 										<div class="additional-service">
 											<div class="additional-content">
 												<div class="form-check">
@@ -176,13 +176,13 @@ if (is_nan($service_amount) || is_infinite($service_amount)) {
 								<label>Payment Method</label>
 								<div>
                                 <?php if (settingValue('wallet_option') == 1) { ?>		
-									<label class="radio-inline"><input class="cod"  type="radio" name="cod" value="2" checked> <?php echo (!empty($user_language[$user_selected]['lg_wallet'])) ? $user_language[$user_selected]['lg_wallet'] : $default_language['en']['lg_wallet']; ?> </label>
+									<label class="radio-inline"><input class="cod"  type="radio" name="cod" value="2" > <?php echo (!empty($user_language[$user_selected]['lg_wallet'])) ? $user_language[$user_selected]['lg_wallet'] : $default_language['en']['lg_wallet']; ?> </label>
                                 <?php } ?>
 									<?php 
                                     $get_cod_option_status = $this->db->where('key','cod_option')->get('system_settings')->row()->value;
                                     $cod_option_status =($get_cod_option_status)?$get_cod_option_status:0;
                                     if(!empty($cod_option_status)) { ?>
-                                    <label class="radio-inline"><input class="cod"  type="radio" name="cod" value="1"> <?php echo (!empty($user_language[$user_selected]['lg_cash_on_delivery'])) ? $user_language[$user_selected]['lg_cash_on_delivery'] : $default_language['en']['lg_cash_on_delivery']; ?> </label>
+                                    <label class="radio-inline"><input class="cod"  type="radio" name="cod" value="1" checked> <?php echo (!empty($user_language[$user_selected]['lg_cash_on_delivery'])) ? $user_language[$user_selected]['lg_cash_on_delivery'] : $default_language['en']['lg_cash_on_delivery']; ?> </label>
                                     <?php } ?>
 								</div>
 							</div>
@@ -192,7 +192,7 @@ if (is_nan($service_amount) || is_infinite($service_amount)) {
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn submit_service_book" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order" data-id="<?php echo $service_details['id']; ?>" data-provider="<?php echo $service_details['user_id'] ?>" data-amount="<?php echo $service_details['service_amount']; ?>" type="submit" id="submit"><?php echo (!empty($user_language[$user_selected]['lg_continue_to_book'])) ? $user_language[$user_selected]['lg_continue_to_book'] : $default_language['en']['lg_continue_to_book']; ?></button>
+                        <button class="btn btn-primary submit-btn submit_service_book" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order" data-id="<?php echo $service_details['id']; ?>" data-provider="<?php echo $service_details['user_id'] ?>" data-amount="<?php echo $service_details['service_amount']; ?>" type="submit" id="submit"><?php /*echo (!empty($user_language[$user_selected]['lg_continue_to_book'])) ? $user_language[$user_selected]['lg_continue_to_book'] : $default_language['en']['lg_continue_to_book']; */?>Contact Provider</button>
                     </div>
                 </form>
             </div>

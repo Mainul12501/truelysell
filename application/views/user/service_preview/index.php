@@ -1109,7 +1109,7 @@ $placholder_img = $this->db->get_where('system_settings', array('key' => 'servic
 
                             ?>
 
-                            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#modal-wizard1"> <?php echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; ?> </a>
+                            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#modal-wizard1"> <?php /*echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; */?>Contact </a>
 
                         <?php } ?>
 

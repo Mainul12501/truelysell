@@ -2870,7 +2870,8 @@
     var input = document.querySelector("#login_mobile");
     if (input) { 
     var iti = window.intlTelInput(input, {
-      initialCountry: country_key,
+      // initialCountry: country_key,
+      initialCountry: "bd",
       separateDialCode: true,
     });
 
@@ -2882,7 +2883,8 @@
 
     var input1 = document.querySelector("#user_mobile");
     var iti = window.intlTelInput(input1, {
-      initialCountry: country_key,
+      initialCountry: "bd",
+      // initialCountry: country_key,
       separateDialCode: true,
     });
     $("#user_mobile").on("input", function () {
@@ -2892,7 +2894,8 @@
 
     var input2 = document.querySelector("#userMobile");
     var iti = window.intlTelInput(input2, {
-      initialCountry: country_key,
+      // initialCountry: country_key,
+      initialCountry: "bd",
       separateDialCode: true,
     });
     $("#userMobile").on("input", function () {
