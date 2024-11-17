@@ -70,16 +70,46 @@ class About extends CI_Controller {
 		$this->load->view($this->data['theme'].'/template');
 	}
 
-    public function send_sms()
+    public static function send_sms($numbers = '01646688970', $message = '')
     {
         try {
-            $client = new \GuzzleHttp\Client();
-            $response = $client->get('https://msg.elitbuzz-bd.com/smsapi?api_key=C2008791651585f7b56e47.45988506&type=text&contacts=01646688970&senderid=8809601011337&msg='.urlencode('Hello there'));
-            $body   = $response->getBody();
-            echo $body;
+            $url = "https://msg.elitbuzz-bd.com/smsapi";
+            $data = [
+                "api_key" => "C2008791651585f7b56e47.45988506",
+                "type" => "unicode",
+                "contacts" => $numbers,
+                "senderid" => "8809601011337",
+                "msg" => $message,
+            ];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            if (!empty($response))
+            {
+                return [
+                    'status' => 'success',
+                    'message' => 'Message sent successfully'
+                ];
+            }
+            else
+            {
+                return [
+                    'status' => 'error',
+                    'message' => 'something went wrong'
+                ];
+            }
+
         } catch (Exception $exception)
         {
-            echo $exception->getMessage();
+            return [
+                'status' => 'error',
+                'message' => $exception->getMessage()
+            ];
         }
 
     }

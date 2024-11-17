@@ -592,9 +592,20 @@ class Booking extends CI_Controller {
                 where('provider_id', (int) $providerInfo['id'])->
                 get()->row_array();
             }
+            $smsMsg = '';
+            try {
+//                $msg = "কাস্টমার নাম: ${$user_data['name']}, মোবাইল: ${$user_data['mobileno']}, কোর্স: ${$records['service_title']}, দাম: ${$records['service_amount']}। আগ্রহী, তিনি হয়তো আপনাকে কল করবেন অথবা আপনি তাকে অফিস দেখার জন্য কল করতে পারেন। Dorker.xyz";
+                $msg = 'কাস্টমার নাম: '.$user_data['name'].', মোবাইল: '.$user_data['mobileno'].', কোর্স: '.$records['service_title'].', দাম: '.$records['service_amount'].'। আগ্রহী, তিনি হয়তো আপনাকে কল করবেন অথবা আপনি তাকে অফিস দেখার জন্য কল করতে পারেন। Dorker.xyz';
+                $smsResponse = About::send_sms($providerInfo['mobileno'], $msg);
+                if (!empty($smsResponse))
+                    $smsMsg = $smsResponse['message'];
 
+            } catch (Exception $exception)
+            {
+                $smsMsg = 'Something went wrong. Please try again';
+            }
 
-			echo json_encode(['success' => true, 'msg' => $message, 'status' => 1, 'provider' => $providerInfo, 'provider_address' => $provider_address['address'] ?? '']);
+			echo json_encode(['success' => true, 'smsMsg' = $smsMsg, 'msg' => $message, 'status' => 1, 'provider' => $providerInfo, 'provider_address' => $provider_address['address'] ?? '']);
         } else {
             $message = (!empty($this->user_language[$this->user_selected]['lg_something_went_wrong'])) ? $this->user_language[$this->user_selected]['lg_something_went_wrong'] : $this->default_language['en']['lg_something_went_wrong'];
             $this->session->set_flashdata('error_message', $message);
