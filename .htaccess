@@ -1,6 +1,6 @@
 RewriteEngine On
-RewriteBase h:/wamp64/www/practice-sections/temp/codig-temp-sadiq-vai/dorkerapp/dorkerapp/
+RewriteBase h:/wamp64/www/practice-sections/client-projects-development/codig-temp-sadiq-vai/dorkerapp/dorkerapp/
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . h:/wamp64/www/practice-sections/temp/codig-temp-sadiq-vai/dorkerapp/dorkerapp/index.php [L]
+RewriteRule . h:/wamp64/www/practice-sections/client-projects-development/codig-temp-sadiq-vai/dorkerapp/dorkerapp/index.php [L]

@@ -451,9 +451,9 @@ $lg = custom_language($lang);
 							<div class="form-group">
 								<label><?php echo (!empty($user_language[$user_selected]['lg_Mobile_Number'])) ? $user_language[$user_selected]['lg_Mobile_Number'] : $default_language['en']['lg_Mobile_Number']; ?></label>
 								<div class="row">
-									<div class="col-12">
+									<div class="col-12" id="loginUserMobileCode">
 									<input  type="hidden" value="" id="login_userMobile_code" />
-										<input type="text" maxlength="10" class="form-control form-control-lg provider_final_no user_mobile" placeholder="<?php echo (!empty($user_language[$user_selected]['lg_enter_mob_no'])) ? $user_language[$user_selected]['lg_enter_mob_no'] : $default_language['en']['lg_enter_mob_no']; ?>" name="userMobile" id='userMobile'>
+										<input type="text" maxlength="10"  class="form-control form-control-lg provider_final_no user_mobile" placeholder="<?php /*echo (!empty($user_language[$user_selected]['lg_enter_mob_no'])) ? $user_language[$user_selected]['lg_enter_mob_no'] : $default_language['en']['lg_enter_mob_no']; */?>Whatsup no: EX 1770250862" name="userMobile" id='userMobile'>
 									</div>
 								</div>
 							</div>
@@ -540,7 +540,7 @@ $lg = custom_language($lang);
 					<div class="account-box">
 						<div class="login-right">
 							<div class="login-header">
-								<h3><?php echo (!empty($user_language[$user_selected]['lg_join_as_user'])) ? $user_language[$user_selected]['lg_join_as_user'] : $default_language['en']['lg_join_as_user']; ?></h3>
+								<h3><?php echo (!empty($user_language[$user_selected]['lg_join_as_user'])) ? $user_language[$user_selected]['lg_join_as_user'] : $default_language['en']['lg_join_as_user']; ?>  <span class="" style="font-size: 15px; text-transform: capitalize">or <a href="javascript:void(0);" style="color: red;float: inherit!important;" data-dismiss="modal" data-toggle="modal" data-target="#tab_login_modal"><?php echo (!empty($user_language[$user_selected]['lg_login'])) ? $user_language[$user_selected]['lg_login'] : $default_language['en']['lg_login']; ?></a></span></h3>
 								<p class="text-muted"><?php echo (!empty($user_language[$user_selected]['lg_registration_customer'])) ? $user_language[$user_selected]['lg_registration_customer'] : $default_language['en']['lg_registration_customer']; ?></p>
 							</div> 
 
@@ -559,11 +559,11 @@ $lg = custom_language($lang);
 									<input type="password" class="form-control" name="userPassword" id='user_password'>
 								</div>
 								<div class="form-group">
-									<label><?php echo (!empty($user_language[$user_selected]['lg_Mobile_Number'])) ? $user_language[$user_selected]['lg_Mobile_Number'] : $default_language['en']['lg_Mobile_Number']; ?></label>
+									<label><?php /*echo (!empty($user_language[$user_selected]['lg_Mobile_Number'])) ? $user_language[$user_selected]['lg_Mobile_Number'] : $default_language['en']['lg_Mobile_Number']; */?> Whatsup no: EX 1770250862</label>
 									<div class="row">
 										<div class="col-12">
 										<input  type="hidden" value="" id="login_user_mobile_code" />
-											<input type="text" maxlength="10" class="form-control user_final_no user_mobile" placeholder="<?php echo (!empty($user_language[$user_selected]['lg_enter_mob_no'])) ? $user_language[$user_selected]['lg_enter_mob_no'] : $default_language['en']['lg_enter_mob_no']; ?>" name="userMobile" id='user_mobile'>
+											<input type="text" maxlength="10" class="form-control user_final_no user_mobile" placeholder="<?php /*echo (!empty($user_language[$user_selected]['lg_enter_mob_no'])) ? $user_language[$user_selected]['lg_enter_mob_no'] : $default_language['en']['lg_enter_mob_no']; */?>. Whatsup no: EX 1770250862" name="userMobile" id='user_mobile'>
 										</div>
 									</div>
 								</div>
@@ -1623,6 +1623,24 @@ if($login_type=='email'){
 				$(document).ready(function(){
 					$('[data-toggle="tooltip"]').tooltip();
 				});
+			</script>
+			<script>
+				$(function () {
+                  setTimeout(function () {
+                    $('.iti__selected-flag .iti__flag').css({
+                        'boxShadow': 'none',
+                        'backgroundRepeat': 'no-repeat',
+                        'backgroundImage': 'none',
+                        'backgroundPosition': '',
+
+                    })
+                    $('.iti__selected-flag .iti__a11y-text').css({
+                        'position': 'relative',
+                      'top': '-4px',
+                    }).text('+880');
+                    $('.iti__selected-flag .iti__arrow').remove();
+                  }, 2000)
+                });
 			</script>
 	</body>
 

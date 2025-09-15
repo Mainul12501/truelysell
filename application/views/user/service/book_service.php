@@ -28,7 +28,12 @@ if (is_nan($service_amount) || is_infinite($service_amount)) {
             <div class="col-lg-10">
 
                 <div class="section-header text-center">
-                    <h2><?php /*echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; */?>Please Fill The Information</h2>
+                    <h2>
+                        <?php /*echo (!empty($user_language[$user_selected]['lg_Book_Service'])) ? $user_language[$user_selected]['lg_Book_Service'] : $default_language['en']['lg_Book_Service']; */?>Please Fill The Information
+                        <br>
+                        <span style="font-size: 15px">Before getting the provider phone number.</span>
+                    </h2>
+
                 </div>
 
 
@@ -181,7 +186,7 @@ if (is_nan($service_amount) || is_infinite($service_amount)) {
                                     $get_cod_option_status = $this->db->where('key','cod_option')->get('system_settings')->row()->value;
                                     $cod_option_status =($get_cod_option_status)?$get_cod_option_status:0;
                                     if(!empty($cod_option_status)) { ?>
-                                    <label class="radio-inline"><input class="cod"  type="radio" name="cod" value="1" checked> <?php echo (!empty($user_language[$user_selected]['lg_cash_on_delivery'])) ? $user_language[$user_selected]['lg_cash_on_delivery'] : $default_language['en']['lg_cash_on_delivery']; ?> </label>
+                                    <label class="radio-inline"><input class="cod"  type="radio" name="cod" value="1" checked> <?php /*echo (!empty($user_language[$user_selected]['lg_cash_on_delivery'])) ? $user_language[$user_selected]['lg_cash_on_delivery'] : $default_language['en']['lg_cash_on_delivery']; */?> As Discussed</label>
                                     <?php } ?>
 								</div>
 							</div>

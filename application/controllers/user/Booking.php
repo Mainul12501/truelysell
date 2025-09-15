@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
 class Booking extends CI_Controller {
 
     public $data;
@@ -16,6 +17,8 @@ class Booking extends CI_Controller {
         $this->data['theme'] = 'user';
         $this->data['model'] = 'home';
         $this->data['base_url'] = base_url();
+
+
 
         $this->load->helper('custom_language');
         $this->load->helper('push_notifications');
@@ -138,7 +141,6 @@ class Booking extends CI_Controller {
 
         $this->user_language = (!empty($this->data['user_language'])) ? $this->data['user_language'] : 'en';
 
-        
     }
 
     public function index() {
@@ -146,6 +148,7 @@ class Booking extends CI_Controller {
     }
 
     public function book_service() {
+
 
         $user_currency = get_user_currency();
         $user_currency_code = $user_currency['user_currency_code'];
@@ -594,9 +597,11 @@ class Booking extends CI_Controller {
             }
             $smsMsg = '';
             try {
+                $this->load->helper('common_helper');
 //                $msg = "কাস্টমার নাম: ${$user_data['name']}, মোবাইল: ${$user_data['mobileno']}, কোর্স: ${$records['service_title']}, দাম: ${$records['service_amount']}। আগ্রহী, তিনি হয়তো আপনাকে কল করবেন অথবা আপনি তাকে অফিস দেখার জন্য কল করতে পারেন। Dorker.xyz";
-                $msg = 'কাস্টমার নাম: '.$user_data['name'].', মোবাইল: '.$user_data['mobileno'].', কোর্স: '.$records['service_title'].', দাম: '.$records['service_amount'].'। আগ্রহী, তিনি হয়তো আপনাকে কল করবেন অথবা আপনি তাকে অফিস দেখার জন্য কল করতে পারেন। Dorker.xyz';
-                $smsResponse = About::send_sms($providerInfo['mobileno'], $msg);
+                $msg = 'কাস্টমার নাম: '.$user_data['name'].', মোবাইল: 0'.$user_data['mobileno'].', কোর্স: '.$records['service_title'].', দাম: '.$records['service_amount'].'। আগ্রহী, তিনি হয়তো আপনাকে কল করবেন অথবা আপনি তাকে অফিস দেখার জন্য কল করতে পারেন। Dorker.xyz';
+//                $smsResponse = About::send_sms($providerInfo['mobileno'], $msg);
+                $smsResponse = sendSms($providerInfo['mobileno'], $msg);
                 if (!empty($smsResponse))
                     $smsMsg = $smsResponse['message'];
 
@@ -605,7 +610,7 @@ class Booking extends CI_Controller {
                 $smsMsg = 'Something went wrong. Please try again';
             }
 
-			echo json_encode(['success' => true, 'smsMsg' = $smsMsg, 'msg' => $message, 'status' => 1, 'provider' => $providerInfo, 'provider_address' => $provider_address['address'] ?? '']);
+			echo json_encode(['success' => true, 'smsMsg' => $smsMsg, 'msg' => $message, 'status' => 1, 'provider' => $providerInfo, 'provider_address' => $provider_address['address'] ?? '']);
         } else {
             $message = (!empty($this->user_language[$this->user_selected]['lg_something_went_wrong'])) ? $this->user_language[$this->user_selected]['lg_something_went_wrong'] : $this->default_language['en']['lg_something_went_wrong'];
             $this->session->set_flashdata('error_message', $message);

@@ -53,8 +53,9 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
-	
+//	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
+	define('ENVIRONMENT', 'development');
+
 	//date_default_timezone_set('Asia/Kolkata');
 /*
  *---------------------------------------------------------------
@@ -321,4 +322,6 @@ switch (ENVIRONMENT)
  */
 if(file_exists(BASEPATH.'core/CodeIgniter.php')){
 require_once BASEPATH.'core/CodeIgniter.php';
+
+
 }

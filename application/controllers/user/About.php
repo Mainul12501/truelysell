@@ -70,7 +70,9 @@ class About extends CI_Controller {
 		$this->load->view($this->data['theme'].'/template');
 	}
 
-    public static function send_sms($numbers = '01646688970', $message = '')
+    public static function send_sms(
+
+    )
     {
         try {
             $url = "https://msg.elitbuzz-bd.com/smsapi";
